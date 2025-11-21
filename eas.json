@@ -1,0 +1,75 @@
+{
+  "cli": {
+    "version": ">= 16.17.0",
+    "appVersionSource": "remote"
+  },
+  "build": {
+    "development": {
+      "developmentClient": true,
+      "distribution": "internal"
+    },
+    "preview": {
+      "distribution": "internal",
+      "node": "20.11.0",
+      "android": {
+        "buildType": "apk",
+        "image": "latest",
+        "cache": {
+          "disabled": true
+        },
+        "env": {
+          "JAVA_HOME": "/usr/lib/jvm/java-17-openjdk-amd64",
+          "NODE_ENV": "production"
+        }
+      },
+      "ios": {
+        "distribution": "internal",
+        "resourceClass": "m1-medium",
+        "simulator": false,
+        "enterpriseProvisioning": "adhoc"
+      }
+    },
+    "production": {
+      "autoIncrement": true,
+      "node": "20.11.0",
+      "android": {
+        "buildType": "app-bundle",
+        "image": "latest",
+        "cache": {
+          "disabled": false
+        },
+        "env": {
+          "JAVA_HOME": "/usr/lib/jvm/java-17-openjdk-amd64",
+          "NODE_ENV": "production"
+        }
+      },
+      "ios": {
+        "distribution": "store",
+        "buildConfiguration": "Release",
+        "resourceClass": "m1-medium",
+        "simulator": false,
+        "enterpriseProvisioning": "universal",
+        "cache": {
+          "disabled": false
+        }
+      }
+    }
+  },
+  "submit": {
+    "production": {
+      "android": {
+        "serviceAccountKeyPath": "./google-play-service-account.json",
+        "track": "production",
+        "releaseStatus": "completed"
+      },
+      "ios": {
+        "appleId": "sahzigler.jf@hotmail.com",
+        "ascAppId": "6475797673",
+        "appleTeamId": "9X4J2H6349",
+        "ascApiKeyId": "TH64QA9U4J",
+        "ascApiKeyIssuerId": "07c03008-e68c-40c3-b705-b28689e3874e",
+        "ascApiKeyPath": "C:/Users/ervin/OneDrive/Área de Trabalho/samarah-app-desktop-main-main-novo-master-main-main/AuthKey_TH64QA9U4J.p8"
+      }
+    }
+  }
+}
