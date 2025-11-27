@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, TextInput, TouchableOpacity, KeyboardAvoidingView, Platform, ScrollView } from 'react-native';
+import { View, Text, StyleSheet, TextInput, TouchableOpacity, KeyboardAvoidingView, Platform, ScrollView, Image } from 'react-native';
 import { router } from 'expo-router';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Lock, Mail } from 'lucide-react-native';
@@ -42,15 +42,21 @@ export default function LoginScreen() {
       style={{ flex: 1 }}
     >
       <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
-        <LinearGradient
-          colors={['#EC4899', '#D946EF']}
-          style={styles.headerGradient}
-        >
-          <View style={styles.logoContainer}>
-            <Text style={styles.logoText}>SAMARAH</Text>
-            <Text style={styles.logoSubtext}>PERSONAL TRAINER</Text>
+        <View style={{ backgroundColor: colors.background, alignItems: 'center', paddingTop: 64, paddingBottom: 40 }}>
+          <View style={{
+            width: 220,
+            height: 130,
+            justifyContent: 'center',
+            alignItems: 'center',
+            marginBottom: 10,
+            overflow: 'hidden'
+          }}>
+            <Image
+              source={require('@/assets/logo_login.png')}
+              style={{ width: 220, height: 220, resizeMode: 'contain', tintColor: "#d56324" }}
+            />
           </View>
-        </LinearGradient>
+        </View>
 
         <View style={[styles.formContainer, { backgroundColor: colors.background }]}>
           <Text style={[styles.welcomeText, { color: colors.text }]}>Bem-vinda de volta!</Text>
@@ -146,8 +152,6 @@ const styles = StyleSheet.create({
   },
   formContainer: {
     flex: 1,
-    borderTopLeftRadius: 30,
-    borderTopRightRadius: 30,
     marginTop: -30,
     paddingHorizontal: 24,
     paddingTop: 30,
@@ -156,11 +160,13 @@ const styles = StyleSheet.create({
     fontFamily: 'Poppins-Bold',
     fontSize: 24,
     marginBottom: 8,
+    textAlign: "center"
   },
   subtitleText: {
     fontFamily: 'Poppins-Regular',
     fontSize: 16,
     marginBottom: 30,
+    textAlign: "center"
   },
   errorContainer: {
     backgroundColor: '#FFEBEE',

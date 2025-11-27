@@ -3,22 +3,22 @@ import { useColorScheme } from 'react-native';
 
 // Define theme colors
 const lightTheme = {
-  primary: '#EC4899',
-  background: '#F9FAFB',
-  card: '#FFFFFF',
-  text: '#1F2937',
-  textSecondary: '#6B7280',
-  border: '#E5E7EB',
+  primary: '#d56324', // laranja destaque
+  background: '#4d184a', // roxo fundo
+  card: '#fff',
+  text: '#fff',
+  textSecondary: '#fff',
+  border: '#d56324',
   success: '#10B981',
 };
 
 const darkTheme = {
-  primary: '#EC4899',
-  background: '#111827',
+  primary: '#d56324',
+  background: '#4d184a',
   card: '#1F2937',
-  text: '#F9FAFB',
-  textSecondary: '#9CA3AF',
-  border: '#374151',
+  text: '#fff',
+  textSecondary: '#fff',
+  border: '#d56324',
   success: '#10B981',
 };
 

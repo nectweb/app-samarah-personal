@@ -1,4 +1,4 @@
-package com.movimento.sz
+package br.com.movimentosz
 
 import android.app.Application
 import android.content.res.Configuration

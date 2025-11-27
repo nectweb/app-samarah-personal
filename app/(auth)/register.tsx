@@ -1,5 +1,15 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, TextInput, TouchableOpacity, KeyboardAvoidingView, Platform, ScrollView } from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  TextInput,
+  TouchableOpacity,
+  KeyboardAvoidingView,
+  Platform,
+  ScrollView,
+  Image,
+} from 'react-native';
 import { router } from 'expo-router';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Lock, Mail, User, ArrowLeft } from 'lucide-react-native';
@@ -20,7 +30,7 @@ export default function RegisterScreen() {
       setError('Preencha todos os campos');
       return;
     }
-    
+
     if (password !== confirmPassword) {
       setError('Senhas não coincidem');
       return;
@@ -28,59 +38,68 @@ export default function RegisterScreen() {
 
     try {
       // Registro no Supabase Auth
-      const { data: { user }, error } = await supabase.auth.signUp({
+      const {
+        data: { user },
+        error,
+      } = await supabase.auth.signUp({
         email,
         password,
         options: {
-          data: { full_name: name }
-        }
+          data: { full_name: name },
+        },
       });
 
       if (error) {
         console.error('Erro no auth.signUp:', error);
         throw error;
       }
-      
+
       // Verificar se o user foi criado corretamente
       if (!user || !user.id) {
         console.error('User ou user.id é null/undefined:', { user });
         throw new Error('Falha ao criar usuário - ID não disponível');
       }
-      
-      console.log('Usuário criado no Auth:', { id: user.id, email: user.email });
-      
+
+      console.log('Usuário criado no Auth:', {
+        id: user.id,
+        email: user.email,
+      });
+
       // Usar upsert para inserir ou atualizar o usuário na tabela users
       const insertData = {
         user_id: user.id, // ID do usuário criado em auth.users
         nome: name,
         email: email,
         ativo: true,
-        tipo: 'aluno'
+        tipo: 'aluno',
       };
-     
+
       console.log('Dados para upsert na tabela users:', insertData);
-     
+
       const { data: insertedData, error: insertError } = await supabase
         .from('users')
-        .upsert(insertData, { 
+        .upsert(insertData, {
           onConflict: 'user_id',
-          ignoreDuplicates: false 
+          ignoreDuplicates: false,
         })
         .select();
-      
+
       if (insertError) {
         console.error('Erro no upsert na tabela users:', insertError);
         console.error('Detalhes do erro:', {
           message: insertError.message,
           details: insertError.details,
           hint: insertError.hint,
-          code: insertError.code
+          code: insertError.code,
         });
         throw insertError;
       }
-      
-      console.log('Dados inseridos/atualizados com sucesso na tabela users:', insertedData);
-      
+
+      console.log(
+        'Dados inseridos/atualizados com sucesso na tabela users:',
+        insertedData
+      );
+
       // Redirect para área do estudante em caso de sucesso
       router.replace('/(student)');
     } catch (error: any) {
@@ -101,24 +120,42 @@ export default function RegisterScreen() {
       style={{ flex: 1 }}
     >
       <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
-        <LinearGradient
-          colors={['#EC4899', '#D946EF']}
-          style={styles.headerGradient}
+        <View
+          style={{
+            backgroundColor: colors.background,
+            alignItems: 'center',
+            paddingTop: 64,
+            paddingBottom: 40,
+          }}
         >
-          <TouchableOpacity 
-            style={styles.backButton}
-            onPress={() => router.back()}
+          <View
+            style={{
+              width: 220,
+              height: 130,
+              justifyContent: 'center',
+              alignItems: 'center',
+              marginBottom: 10,
+              overflow: 'hidden',
+            }}
           >
-            <ArrowLeft size={24} color="white" />
-          </TouchableOpacity>
-          <View style={styles.logoContainer}>
-            <Text style={styles.logoText}>SAMARAH</Text>
-            <Text style={styles.logoSubtext}>PERSONAL TRAINER</Text>
+            <Image
+              source={require('@/assets/logo_login.png')}
+              style={{
+                width: 220,
+                height: 220,
+                resizeMode: 'contain',
+                tintColor: '#d56324',
+              }}
+            />
           </View>
-        </LinearGradient>
+        </View>
 
-        <View style={[styles.formContainer, { backgroundColor: colors.background }]}>
-          <Text style={[styles.welcomeText, { color: colors.text }]}>Criar Conta</Text>
+        <View
+          style={[styles.formContainer, { backgroundColor: colors.background }]}
+        >
+          <Text style={[styles.welcomeText, { color: colors.text }]}>
+            Criar Conta
+          </Text>
           <Text style={[styles.subtitleText, { color: colors.textSecondary }]}>
             Preencha os dados para se registrar
           </Text>
@@ -129,7 +166,12 @@ export default function RegisterScreen() {
             </View>
           )}
 
-          <View style={[styles.inputContainer, { backgroundColor: colors.card, borderColor: colors.border }]}>
+          <View
+            style={[
+              styles.inputContainer,
+              { backgroundColor: colors.card, borderColor: colors.border },
+            ]}
+          >
             <User size={20} color={colors.primary} />
             <TextInput
               style={[styles.input, { color: colors.text }]}
@@ -141,7 +183,12 @@ export default function RegisterScreen() {
             />
           </View>
 
-          <View style={[styles.inputContainer, { backgroundColor: colors.card, borderColor: colors.border }]}>
+          <View
+            style={[
+              styles.inputContainer,
+              { backgroundColor: colors.card, borderColor: colors.border },
+            ]}
+          >
             <Mail size={20} color={colors.primary} />
             <TextInput
               style={[styles.input, { color: colors.text }]}
@@ -154,7 +201,12 @@ export default function RegisterScreen() {
             />
           </View>
 
-          <View style={[styles.inputContainer, { backgroundColor: colors.card, borderColor: colors.border }]}>
+          <View
+            style={[
+              styles.inputContainer,
+              { backgroundColor: colors.card, borderColor: colors.border },
+            ]}
+          >
             <Lock size={20} color={colors.primary} />
             <TextInput
               style={[styles.input, { color: colors.text }]}
@@ -167,7 +219,12 @@ export default function RegisterScreen() {
             />
           </View>
 
-          <View style={[styles.inputContainer, { backgroundColor: colors.card, borderColor: colors.border }]}>
+          <View
+            style={[
+              styles.inputContainer,
+              { backgroundColor: colors.card, borderColor: colors.border },
+            ]}
+          >
             <Lock size={20} color={colors.primary} />
             <TextInput
               style={[styles.input, { color: colors.text }]}
@@ -180,7 +237,10 @@ export default function RegisterScreen() {
             />
           </View>
 
-          <TouchableOpacity style={styles.registerButton} onPress={handleRegister}>
+          <TouchableOpacity
+            style={styles.registerButton}
+            onPress={handleRegister}
+          >
             <LinearGradient
               colors={['#EC4899', '#D946EF']}
               style={styles.gradientButton}
@@ -197,7 +257,8 @@ export default function RegisterScreen() {
             </Text>
             <TouchableOpacity onPress={() => router.push('/login')}>
               <Text style={[styles.loginLink, { color: colors.primary }]}>
-                {' '}Faça login
+                {' '}
+                Faça login
               </Text>
             </TouchableOpacity>
           </View>
@@ -235,8 +296,6 @@ const styles = StyleSheet.create({
   },
   formContainer: {
     flex: 1,
-    borderTopLeftRadius: 30,
-    borderTopRightRadius: 30,
     marginTop: -30,
     paddingHorizontal: 24,
     paddingTop: 30,
@@ -307,4 +366,3 @@ const styles = StyleSheet.create({
     fontSize: 14,
   },
 });
-
