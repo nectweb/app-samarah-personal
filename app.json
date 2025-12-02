@@ -34,7 +34,7 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "br.com.movimentosz",
+      "package": "com.movimento.sz",
       "versionCode": 1
     },
     "web": {

@@ -44,8 +44,8 @@ export default function LoginScreen() {
       <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
         <View style={{ backgroundColor: colors.background, alignItems: 'center', paddingTop: 64, paddingBottom: 40 }}>
           <View style={{
-            width: 220,
-            height: 130,
+            width: 270,
+            height: 200,
             justifyContent: 'center',
             alignItems: 'center',
             marginBottom: 10,
@@ -53,7 +53,7 @@ export default function LoginScreen() {
           }}>
             <Image
               source={require('@/assets/logo_login.png')}
-              style={{ width: 220, height: 220, resizeMode: 'contain', tintColor: "#d56324" }}
+              style={{ width: 290, height: '100%', resizeMode: 'cover' }}
             />
           </View>
         </View>

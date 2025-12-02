@@ -1,4 +1,4 @@
-package br.com.movimentosz
+package com.movimento.sz
 import expo.modules.splashscreen.SplashScreenManager
 
 import android.os.Build
