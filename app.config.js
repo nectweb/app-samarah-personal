@@ -18,7 +18,7 @@ module.exports = {
     assetBundlePatterns: ['**/*'],
     ios: {
       supportsTablet: true,
-      bundleIdentifier: 'com.movimento.sz',
+      bundleIdentifier: 'br.com.movimentosz',
       buildNumber: '1',
       infoPlist: {
         NSCameraUsageDescription: 'Este app precisa acessar a câmera para fotos de perfil e progresso.',
@@ -37,7 +37,7 @@ module.exports = {
         foregroundImage: './assets/adaptive-icon.png',
         backgroundColor: '#FFFFFF',
       },
-      package: 'com.movimento.sz',
+      package: 'br.com.movimentosz',
       versionCode: 1,
       permissions: [
         'CAMERA',

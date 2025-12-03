@@ -1,4 +1,4 @@
-package com.movimento.sz
+package br.com.movimentosz
 
 import android.app.Application
 import android.content.res.Configuration
@@ -35,7 +35,7 @@ class MainApplication : Application(), ReactApplication {
           override val isNewArchEnabled: Boolean = BuildConfig.IS_NEW_ARCHITECTURE_ENABLED
           override val isHermesEnabled: Boolean = BuildConfig.IS_HERMES_ENABLED
       }
-            // Arquivo movido para br.com.movimentosz
+  )
 
   override val reactHost: ReactHost
     get() = ReactNativeHostWrapper.createReactHost(applicationContext, reactNativeHost)

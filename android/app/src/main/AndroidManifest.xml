@@ -30,7 +30,7 @@
         <category android:name="android.intent.category.DEFAULT"/>
         <category android:name="android.intent.category.BROWSABLE"/>
         <data android:scheme="samarah-fitness"/>
-        <data android:scheme="com.movimento.sz"/>
+        <data android:scheme="br.com.movimentosz"/>
       </intent-filter>
     </activity>
   </application>
