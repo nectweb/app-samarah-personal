@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { Alert, Modal } from 'react-native';
 import {
   View,
   Text,
@@ -35,6 +36,56 @@ export default function SettingsScreen() {
     foto: null,
     telefone: null,
   });
+
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [deleting, setDeleting] = useState(false);
+  const handleDeleteAccount = async () => {
+    setDeleting(true);
+    try {
+      // Excluir dados do usuário nas principais tabelas
+      const tablesToDelete = [
+        'users',
+        'medidas_corporais',
+        'fichas_das_alunas',
+        'fichas_treino',
+        'controle_peso',
+        // Adicione outras tabelas que tenham user_id ou aluna_id
+      ];
+      for (const table of tablesToDelete) {
+        await supabase
+          .from(table)
+          .delete()
+          .or(`user_id.eq.${user.id},aluna_id.eq.${user.id}`);
+      }
+
+      // Chama API PHP para excluir do Auth
+      const response = await fetch('https://movimentosz.com.br/api/index.php', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          userId: user.id,
+          adminSecret: '#ffgd1223#*_fsd',
+        }),
+      });
+      const result = await response.json();
+      if (response.status === 200 || result.success) {
+        // Sucesso!
+        await supabase.auth.signOut();
+        setDeleting(false);
+        setShowDeleteModal(false);
+        Alert.alert('Conta excluída', 'Sua conta foi removida do app e do login.');
+        router.replace('/auth/login');
+      } else {
+        // Mostra erro detalhado
+        console.error('Erro detalhado Supabase:', result.response);
+        throw new Error(result.response || result.error || 'Erro ao excluir do Auth');
+      }
+    } catch (error) {
+      setDeleting(false);
+      Alert.alert('Erro', 'Não foi possível excluir a conta. Tente novamente.');
+      console.error('Erro ao excluir conta:', error);
+    }
+  };
 
   useEffect(() => {
     if (user) {
@@ -154,6 +205,73 @@ export default function SettingsScreen() {
           <Text style={styles.logoutText}>Sair</Text>
         </TouchableOpacity>
 
+        <TouchableOpacity
+          style={styles.deleteButton}
+          onPress={() => setShowDeleteModal(true)}
+        >
+          <Shield size={20} color="#EF4444" />
+          <Text style={styles.deleteText}>Excluir Conta</Text>
+        </TouchableOpacity>
+
+        <Modal
+          visible={showDeleteModal}
+          transparent
+          animationType="fade"
+          onRequestClose={() => setShowDeleteModal(false)}
+        >
+          <View
+            style={{
+              flex: 1,
+              justifyContent: 'center',
+              alignItems: 'center',
+              backgroundColor: 'rgba(0,0,0,0.4)',
+            }}
+          >
+            <View
+              style={{
+                backgroundColor: colors.card,
+                padding: 24,
+                borderRadius: 16,
+                width: '80%',
+              }}
+            >
+              <Text
+                style={{
+                  fontSize: 18,
+                  fontWeight: 'bold',
+                  color: colors.text,
+                  marginBottom: 12,
+                }}
+              >
+                Confirmar Exclusão
+              </Text>
+              <Text style={{ color: colors.textSecondary, marginBottom: 24 }}>
+                Tem certeza que deseja excluir sua conta? Esta ação é
+                irreversível e todos os seus dados serão apagados.
+              </Text>
+              <View
+                style={{ flexDirection: 'row', justifyContent: 'flex-end' }}
+              >
+                <TouchableOpacity
+                  style={{ marginRight: 16 }}
+                  onPress={() => setShowDeleteModal(false)}
+                  disabled={deleting}
+                >
+                  <Text style={{ color: colors.primary }}>Cancelar</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  onPress={handleDeleteAccount}
+                  disabled={deleting}
+                >
+                  <Text style={{ color: '#EF4444', fontWeight: 'bold' }}>
+                    {deleting ? 'Excluindo...' : 'Excluir'}
+                  </Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+          </View>
+        </Modal>
+
         <View style={styles.bottomPadding} />
       </ScrollView>
     </View>
@@ -176,12 +294,16 @@ const styles = StyleSheet.create({
   profileSection: {
     alignItems: 'center',
     marginBottom: 32,
+    overflow: 'hidden',
+    justifyContent: 'center',
+    width: '100%',
   },
   profileImage: {
     width: 100,
     height: 100,
     borderRadius: 50,
     marginBottom: 16,
+    resizeMode: 'cover',
   },
   profileName: {
     fontFamily: 'Poppins-Bold',
@@ -257,5 +379,24 @@ const styles = StyleSheet.create({
   },
   bottomPadding: {
     height: 100,
+  },
+  deleteButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginHorizontal: 20,
+    marginTop: 16,
+    padding: 16,
+    borderRadius: 16,
+    borderWidth: 1,
+    borderColor: '#EF4444',
+    backgroundColor: 'rgba(239, 68, 68, 0.08)',
+  },
+  deleteText: {
+    fontFamily: 'Poppins-Medium',
+    fontSize: 16,
+    marginLeft: 8,
+    color: '#EF4444',
+    fontWeight: 'bold',
   },
 });

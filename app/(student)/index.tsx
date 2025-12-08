@@ -171,18 +171,18 @@ export default function StudentDashboard() {
     >
       {/* Welcome Section */}
       <View style={styles.header}>
-        <View>
-          <Text style={[styles.welcomeText, { color: colors.text }]}>
-            Olá, {formatDisplayName(userData?.nome)}! 👋
-          </Text>
-          <Text style={[styles.motivationalText, { color: colors.textSecondary }]}>
-            {motivationalMessage}
-          </Text>
-        </View>
         <Image
           source={userData?.foto || DEFAULT_PROFILE_IMAGE}
           style={styles.profileImage}
         />
+        <View style={{ marginLeft: 16, flex: 1 }}>
+          <Text style={[styles.welcomeText, { color: colors.text }]}> 
+            Olá, {formatDisplayName(userData?.nome)}! 👋
+          </Text>
+          <Text style={[styles.motivationalText, { color: colors.textSecondary }]}> 
+            {motivationalMessage}
+          </Text>
+        </View>
       </View>
 
       {/* Weekly Workout Frequency */}
@@ -270,20 +270,30 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingTop: 60,
     paddingBottom: 20,
+    gap: 10,
   },
   welcomeText: {
     fontFamily: 'Poppins-Bold',
-    fontSize: 24,
+    fontSize: 14,
     marginBottom: 4,
   },
   motivationalText: {
     fontFamily: 'Poppins-Regular',
-    fontSize: 16,
+    fontSize: 12,
   },
   profileImage: {
-    width: 50,
-    height: 50,
-    borderRadius: 25,
+    width: 64,
+    height: 64,
+    borderRadius: 32,
+    borderWidth: 2,
+    borderColor: '#EC4899',
+    backgroundColor: '#fff',
+    resizeMode: 'cover',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.15,
+    shadowRadius: 4,
+    elevation: 3,
   },
   section: {
     marginHorizontal: 20,
