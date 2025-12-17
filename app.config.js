@@ -1,6 +1,6 @@
 module.exports = {
   expo: {
-    name: 'Movimento SZ',
+    name: 'MovimentoSZ',
     slug: 'movimento-sz',
     scheme: 'samarah-fitness',
     version: '1.0.0',
@@ -19,7 +19,7 @@ module.exports = {
     ios: {
       supportsTablet: true,
       bundleIdentifier: 'br.com.movimentosz',
-      buildNumber: '1',
+      buildNumber: '2',
       infoPlist: {
         NSCameraUsageDescription: 'Este app precisa acessar a câmera para fotos de perfil e progresso.',
         NSPhotoLibraryUsageDescription: 'Este app precisa acessar suas fotos para perfil e acompanhamento.',
@@ -64,14 +64,14 @@ module.exports = {
         {
           ios: {
             deploymentTarget: '15.1',
-            newArchEnabled: false,
+            newArchEnabled: true,
           },
           android: {
             compileSdkVersion: 35,
             targetSdkVersion: 35,
             buildToolsVersion: '35.0.0',
-            minSdkVersion: 24,
-            newArchEnabled: false,
+            minSdkVersion: 24,            
+            newArchEnabled: true,
             java: {
               compileSdkVersion: 17,
             },
